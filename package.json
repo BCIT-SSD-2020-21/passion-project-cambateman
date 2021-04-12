@@ -1,0 +1,24 @@
+{
+  "name": "passion-project-cambateman",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BCIT-SSD-2020-21/passion-project-cambateman.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BCIT-SSD-2020-21/passion-project-cambateman/issues"
+  },
+  "homepage": "https://github.com/BCIT-SSD-2020-21/passion-project-cambateman#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.3"
+  }
+}
