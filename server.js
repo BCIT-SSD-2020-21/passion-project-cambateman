@@ -26,7 +26,7 @@ server.get('/', (req, res) => {
 });
 
 server.get('/makeathlete', async (req, res) => {
-    const athlete = new Athlete({ Name: "Cam Bateman", Sport: "Lacrosse", GraduationYear: 2017, HighSchool: "Heritage Woods", PostGrad: false });
+    const athlete = new Athlete({ Name: "Cam Bateman", Sport: "Lacrosse", GraduationYear: 2017, HighSchool: "Heritage Woods", PostGrad: false, City: "Vancouver"});
     await athlete.save();
     res.send(athlete)
 });
