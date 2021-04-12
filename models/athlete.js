@@ -6,7 +6,8 @@ const AthleteSchema = new Schema({
     Sport: String,
     GraduationYear: Number,
     HighSchool: String,
-    PostGrad: Boolean
+    PostGrad: Boolean,
+    City: String
 });
 
 module.exports = mongoose.model('Athlete', AthleteSchema);
