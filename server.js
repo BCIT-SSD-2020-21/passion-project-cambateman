@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const methodOverride = require('method-override');
 const Athlete = require('./models/athlete');
 
 mongoose.connect('mongodb://localhost:27017/scouting', {
@@ -18,6 +19,7 @@ db.once("open", () => {
 const server = express();
 
 server.use(express.urlencoded({ extended: true }))
+server.use(methodOverride('_method'));
 
 server.set('view engine', 'ejs');
 server.set('views', path.join(__dirname, 'views'));
@@ -30,11 +32,6 @@ server.get('/athletes', async (req, res) => {
     const athletes = await Athlete.find({});
     res.render('athletes/index', { athletes })
 });
-
-
-
-
-
 
 server.get('/athletes/new', (req, res) => {
     res.render('athletes/new')
@@ -50,6 +47,17 @@ server.get('/athletes/:id', async (req, res) => {
     const athlete = await Athlete.findById(req.params.id)
     res.render('athletes/show', { athlete })
 })
+
+server.get('/athletes/:id/edit', async (req, res) => {
+    const athlete = await Athlete.findById(req.params.id)
+    res.render('athletes/edit', { athlete })
+})
+
+server.put('/athletes/:id', async (req, res) => {
+    const { id } = req.params;
+    const athlete = await Athlete.findByIdAndUpdate(id, { ...req.body.athlete });
+    res.redirect(`/athletes/${athlete._id}`)
+});
 
 server.listen(8080, () => {
     console.log("Serving on port 8080")
