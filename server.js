@@ -30,6 +30,11 @@ server.get('/athletes', async (req, res) => {
     res.render('athletes/index', { athletes })
 });
 
+server.get('/athletes/:id', async (req, res) => {
+    const athlete = await Athlete.findById(req.params.id)
+    res.render('athletes/show', { athlete })
+})
+
 
 
 // server.get('/makeathlete', async (req, res) => {

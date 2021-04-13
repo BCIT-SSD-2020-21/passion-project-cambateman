@@ -10,7 +10,7 @@
     <h1>All Athletes</h1>
     <ul>
         <% for (let athlete of athletes) {%>
-            <li><%= athlete.name%></li>
+            <li><a href="/athletes/<%= athlete._id%>"><%= athlete.name%></a></li>
                 <ul>
                     <li><%=athlete.sport %></li>
                 </ul>
