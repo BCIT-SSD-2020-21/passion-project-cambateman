@@ -25,11 +25,18 @@ server.get('/', (req, res) => {
     res.render('home')
 });
 
-server.get('/makeathlete', async (req, res) => {
-    const athlete = new Athlete({ Name: "Cam Bateman", Sport: "Lacrosse", GraduationYear: 2017, HighSchool: "Heritage Woods", PostGrad: false, City: "Vancouver"});
-    await athlete.save();
-    res.send(athlete)
+server.get('/athletes', async (req, res) => {
+    const athletes = await Athlete.find({});
+    res.render('athletes/index', { athletes })
 });
+
+
+
+// server.get('/makeathlete', async (req, res) => {
+//     const athlete = new Athlete({ Name: "Cam Bateman", Sport: "Lacrosse", GraduationYear: 2017, HighSchool: "Heritage Woods", PostGrad: false, City: "Vancouver"});
+//     await athlete.save();
+//     res.send(athlete)
+// });
 
 server.listen(8080, () => {
     console.log("Serving on port 8080")
