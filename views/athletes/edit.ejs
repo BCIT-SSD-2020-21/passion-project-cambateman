@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Athlete</title>
-</head>
-<body>
+<% layout('layouts/boilerplate') %>
     <h1>edit Athlete</h1>
     <form action="/athletes/<%= athlete._id %>?_method=PUT " method="POST">
         <div>
@@ -30,5 +22,3 @@
     <div>
         <a href="/athletes/<%= athlete._id %> ">back to athlete</a>
     </div>
-</body>
-</html>
