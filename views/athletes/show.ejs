@@ -1,7 +1,9 @@
 <% layout('layouts/boilerplate') %>
     <h1><%= athlete.name %></h1>
     <h2><%= athlete.sport %></h2>
-    <h3><%= athlete.highSchool %></h3><br>
+    <h3><%= athlete.highSchool %></h3>
+    <img src="<%= athlete.image %>" alt="">
+    <br>
     <form action="/athletes/<%=athlete._id%>?_method=DELETE" method="POST">
         <button>Delete</button>
     </form>
