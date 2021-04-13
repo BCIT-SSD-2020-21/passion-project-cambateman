@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Athlete</title>
+</head>
+<body>
+    <form action="/athletes" method="POST">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="athlete[name]">
+        </div>
+        <div>
+            <label for="sport">Sport:</label>
+            <input type="text" id="sport" name="athlete[sport]">
+        </div>
+        <div>
+            <label for="highSchool">High School:</label>
+            <input type="text" id="highSchool" name="athlete[highSchool]">
+        </div>
+        <div>
+            <label for="graduationYear">Graduation Year:</label>
+            <input type="text" id="graduationYear" name="athlete[graduationYear]">
+        </div>
+        <button>Submit Athlete</button>
+    </form>
+    <div>
+        <a href="/athletes/">back</a>
+    </div>
+</body>
+</html>

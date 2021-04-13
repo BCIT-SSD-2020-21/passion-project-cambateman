@@ -17,6 +17,7 @@ db.once("open", () => {
 
 const server = express();
 
+server.use(express.urlencoded({ extended: true }))
 
 server.set('view engine', 'ejs');
 server.set('views', path.join(__dirname, 'views'));
@@ -30,18 +31,25 @@ server.get('/athletes', async (req, res) => {
     res.render('athletes/index', { athletes })
 });
 
+
+
+
+
+
+server.get('/athletes/new', (req, res) => {
+    res.render('athletes/new')
+})
+
+server.post('/athletes', async (req, res) => {
+    const athlete = new Athlete(req.body.athlete)
+    await athlete.save();
+    res.redirect(`/athletes/${athlete._id}`)
+})
+
 server.get('/athletes/:id', async (req, res) => {
     const athlete = await Athlete.findById(req.params.id)
     res.render('athletes/show', { athlete })
 })
-
-
-
-// server.get('/makeathlete', async (req, res) => {
-//     const athlete = new Athlete({ Name: "Cam Bateman", Sport: "Lacrosse", GraduationYear: 2017, HighSchool: "Heritage Woods", PostGrad: false, City: "Vancouver"});
-//     await athlete.save();
-//     res.send(athlete)
-// });
 
 server.listen(8080, () => {
     console.log("Serving on port 8080")
