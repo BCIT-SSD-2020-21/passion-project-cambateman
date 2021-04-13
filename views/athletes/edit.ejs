@@ -2,25 +2,28 @@
 <div class="row">
     <h1 class="text-center">edit Athlete</h1>
     <div class="col-6 offset-3">
-        <form action="/athletes/<%= athlete._id %>?_method=PUT " method="POST">
+        <form action="/athletes/<%= athlete._id %>?_method=PUT " method="POST" novalidate class="validated-form">
             <div class="mb-3">
                 <label class="form-label" for="name">Name:</label>
-                <input class="form-control" type="text" id="name" name="athlete[name]" value="<%= athlete.name %>">
+                <input class="form-control" type="text" id="name" name="athlete[name]" value="<%= athlete.name %>" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="sport">Sport:</label>
-                <input class="form-control" type="text" id="sport" name="athlete[sport]" value="<%= athlete.sport %>">
+                <input class="form-control" type="text" id="sport" name="athlete[sport]" value="<%= athlete.sport %>" required>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="highSchool">High School:</label>
-                <input class="form-control" type="text" id="highSchool" name="athlete[highSchool]" value="<%= athlete.highSchool %>">
+                <input class="form-control" type="text" id="highSchool" name="athlete[highSchool]" value="<%= athlete.highSchool %>" required>
             </div>
             <div class="mb-3"> 
                 <label class="form-label" for="graduationYear">Graduation Year:</label>
-                <input class="form-control" type="text" id="graduationYear" name="athlete[graduationYear]" value="<%= athlete.graduationYear %>">
+                <input class="form-control" type="text" id="graduationYear" name="athlete[graduationYear]" value="<%= athlete.graduationYear %>" required>
             </div>
             <div class="mb-3">
-            <button class="btn btn-info">Update Campground</button>
+            <button class="btn btn-info">Update Athlete</button>
             </div>
         </form>
         <a href="/athletes/<%= athlete._id%>">Back To Athletes</a>
