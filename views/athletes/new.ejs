@@ -1,23 +1,33 @@
-<% layout('layouts/boilerplate') %>
-    <form action="/athletes" method="POST">
-        <div>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="athlete[name]">
-        </div>
-        <div>
-            <label for="sport">Sport:</label>
-            <input type="text" id="sport" name="athlete[sport]">
-        </div>
-        <div>
-            <label for="highSchool">High School:</label>
-            <input type="text" id="highSchool" name="athlete[highSchool]">
-        </div>
-        <div>
-            <label for="graduationYear">Graduation Year:</label>
-            <input type="text" id="graduationYear" name="athlete[graduationYear]">
-        </div>
-        <button>Submit Athlete</button>
-    </form>
-    <div>
-        <a href="/athletes/">back</a>
+<% layout('layouts/boilerplate')%>
+<div class="row">
+    <h1 class="text-center">New Athlete</h1>
+    <div class="col-6 offset-3">
+        <form action="/athletes" method="POST">
+            <div class="mb-3">
+                <label class="form-label" for="name">Name:</label>
+                <input class="form-control" type="text" id="name" name="athlete[name]">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="image">Image Url:</label>
+                <input class="form-control" type="text" id="image" name="athlete[image]">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="sport">Sport:</label>
+                <input class="form-control" type="text" id="sport" name="athlete[sport]">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="highSchool">High School:</label>
+                <input class="form-control" type="text" id="highSchool" name="athlete[highSchool]">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="graduationYear">Graduation Year:</label>
+                <input class="form-control" type="text" id="graduationYear" name="athlete[graduationYear]">
+            </div>
+
+            <div class="mb-3">
+                <button class="btn btn-success">Add Athlete</button>
+            </div>
+        </form>
+        <a href="/athletes">All Athletes</a>
     </div>
+</div>
