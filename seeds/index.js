@@ -23,6 +23,7 @@ const seedDB = async () => {
         const random1000 = Math.floor(Math.random() * 1000);
         const athlete = new Athlete({
             name: `${sample(firstNames)} ${sample(lastNames)}`,
+            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrucfhOvSABTWfUdIfHQ4c4Mfs7pA0DzFmZA&usqp=CAU',
             sport: `${sample(sports)}`,
             graduationYear: `${sample(graduationsYears)}`,
             highSchool: `${sample(highSchools)}`,

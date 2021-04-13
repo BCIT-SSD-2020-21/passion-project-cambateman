@@ -1,23 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Show</title>
-</head>
-<body>
-    <h1><%= athlete.name %></h1>
-    <h2><%= athlete.sport %></h2>
-    <h3><%= athlete.highSchool %></h3><br>
-    <form action="/athletes/<%=athlete._id%>?_method=DELETE" method="POST">
-        <button>Delete</button>
-    </form>
+<% layout('layouts/boilerplate')%>
 
-    <footer>
-        <a href="/athletes/<%= athlete._id%>/edit">Edit Athletes</a>
-        <br>
-        <a href="/athletes">Back to Athletes</a>
-    </footer>
-</body>
-</html>
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="card mb-3">
+            <img src="<%= athlete.image%>" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title"><%= athlete.name%></h5>
+                <p class="card-text"><%= athlete.sport%></p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-muted"><%= athlete.highSchool%></li>
+                <li class="list-group-item"><%= athlete.graduationYear%></li>
+            </ul>
+            <div class="card-body">
+                <a class="card-link btn btn-info" href="/athletes/<%=athlete._id%>/edit">Edit</a>
+                <form class="d-inline" action="/athletes/<%=athlete._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

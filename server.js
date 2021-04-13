@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const Athlete = require('./models/athlete');
 
@@ -17,6 +18,8 @@ db.once("open", () => {
 });
 
 const server = express();
+
+server.engine('ejs', ejsMate)
 
 server.use(express.urlencoded({ extended: true }))
 server.use(methodOverride('_method'));
