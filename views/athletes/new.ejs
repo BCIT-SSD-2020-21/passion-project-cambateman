@@ -2,28 +2,42 @@
 <div class="row">
     <h1 class="text-center">New Athlete</h1>
     <div class="col-6 offset-3">
-        <form action="/athletes" method="POST">
+        <form action="/athletes" method="POST" novalidate class="validated-form">
             <div class="mb-3">
                 <label class="form-label" for="name">Name:</label>
-                <input class="form-control" type="text" id="name" name="athlete[name]">
+                <input class="form-control" type="text" id="name" name="athlete[name]" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="image">Image Url:</label>
-                <input class="form-control" type="text" id="image" name="athlete[image]">
+                <input class="form-control" type="text" id="image" name="athlete[image]" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="sport">Sport:</label>
-                <input class="form-control" type="text" id="sport" name="athlete[sport]">
+                <input class="form-control" type="text" id="sport" name="athlete[sport]" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="highSchool">High School:</label>
-                <input class="form-control" type="text" id="highSchool" name="athlete[highSchool]">
+                <input class="form-control" type="text" id="highSchool" name="athlete[highSchool]" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="graduationYear">Graduation Year:</label>
-                <input class="form-control" type="text" id="graduationYear" name="athlete[graduationYear]">
+                <input class="form-control" type="text" id="graduationYear" name="athlete[graduationYear]" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
             </div>
-
             <div class="mb-3">
                 <button class="btn btn-success">Add Athlete</button>
             </div>
