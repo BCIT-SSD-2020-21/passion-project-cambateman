@@ -59,6 +59,12 @@ server.put('/athletes/:id', async (req, res) => {
     res.redirect(`/athletes/${athlete._id}`)
 });
 
+server.delete('/athletes/:id', async (req, res) => {
+    const { id } = req.params;
+    await Athlete.findByIdAndDelete(id);
+    res.redirect('/athletes');
+})
+
 server.listen(8080, () => {
     console.log("Serving on port 8080")
 });
