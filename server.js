@@ -94,7 +94,6 @@ server.delete('/athletes/:id', async (req, res) => {
 server.post('/athletes/:id/reviews', (async (req, res) => {
     const athlete = await Athlete.findById(req.params.id);
     const review = new Review(req.body.review);
-    console.log(req.body.review)
     athlete.reviews.push(review);
     await review.save();
     await athlete.save();
