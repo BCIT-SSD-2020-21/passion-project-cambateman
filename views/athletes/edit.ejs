@@ -11,16 +11,32 @@
                 </div>
             </div>
             <div class="mb-3">
+                <label class="form-label" for="image">Image URL:</label>
+                <input class="form-control" type="text" id="image" name="athlete[image]" value="<%= athlete.image %>" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
+            </div>
+            <div class="mb-3">
                 <label class="form-label" for="sport">Sport:</label>
                 <input class="form-control" type="text" id="sport" name="athlete[sport]" value="<%= athlete.sport %>" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="highSchool">High School:</label>
                 <input class="form-control" type="text" id="highSchool" name="athlete[highSchool]" value="<%= athlete.highSchool %>" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
             </div>
             <div class="mb-3"> 
                 <label class="form-label" for="graduationYear">Graduation Year:</label>
                 <input class="form-control" type="text" id="graduationYear" name="athlete[graduationYear]" value="<%= athlete.graduationYear %>" required>
+                <div class="valid-feedback">
+                    OK!
+                </div>
             </div>
             <div class="mb-3">
             <button class="btn btn-info">Update Athlete</button>

@@ -2,110 +2,81 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const { athleteSchema, reviewSchema } = require('./schemas.js');
-const catchAsync = require('./utils/catchAsync');
+const session = require('express-session');
+const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
-const Athlete = require('./models/athlete');
-const Review = require('./models/review');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
+
+
+const userRoutes = require('./routes/users');
+const athletesRoutes = require('./routes/athletes');
+const reviewRoutes = require('./routes/reviews');
 
 mongoose.connect('mongodb://localhost:27017/scouting', {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 });
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
-    console.log("Database Coneected")
+    console.log("Database connected");
 });
 
 const server = express();
 
 server.engine('ejs', ejsMate)
-
 server.set('view engine', 'ejs');
-server.set('views', path.join(__dirname, 'views'));
+server.set('views', path.join(__dirname, 'views'))
 
-server.use(express.urlencoded({ extended: true }))
+server.use(express.urlencoded({ extended: true }));
 server.use(methodOverride('_method'));
+server.use(express.static(path.join(__dirname, 'public')))
 
-const validateAthlete = (req, res, next) => {
-    const { error } = athleteSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
+const sessionConfig = {
+    secret: 'thisshouldbeabettersecret!',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
+
+server.use(session(sessionConfig))
+server.use(flash());
+
+server.use(passport.initialize());
+server.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+server.use((req, res, next) => {
+    console.log(req.session)
+    res.locals.currentUser = req.user;
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
+
+
+server.use('/', userRoutes);
+server.use('/athletes', athletesRoutes)
+server.use('/athletes/:id/reviews', reviewRoutes)
+
 
 server.get('/', (req, res) => {
     res.render('home')
 });
 
-server.get('/athletes', catchAsync (async (req, res) => {
-    const athletes = await Athlete.find({});
-    res.render('athletes/index', { athletes })
-}));
-
-server.get('/athletes/new', (req, res) => {
-    res.render('athletes/new')
-})
-
-server.post('/athletes', validateAthlete, catchAsync(async (req, res) => {
-    const athlete = new Athlete(req.body.athlete)
-    await athlete.save();
-    res.redirect(`/athletes/${athlete._id}`)
-}))
-
-server.get('/athletes/:id', catchAsync(async (req, res) => {
-    const athlete = await Athlete.findById(req.params.id).populate('reviews')
-    res.render('athletes/show', { athlete })
-}))
-
-server.get('/athletes/:id/edit', catchAsync(async (req, res) => {
-    const athlete = await Athlete.findById(req.params.id)
-    res.render('athletes/edit', { athlete })
-}))
-
-server.put('/athletes/:id', validateAthlete, catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const athlete = await Athlete.findByIdAndUpdate(id, { ...req.body.athlete });
-    res.redirect(`/athletes/${athlete._id}`)
-}));
-
-server.delete('/athletes/:id', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await Athlete.findByIdAndDelete(id);
-    res.redirect('/athletes');
-}))
-
-server.post('/athletes/:id/reviews', validateReview, catchAsync(async (req, res) => {
-    const athlete = await Athlete.findById(req.params.id);
-    const review = new Review(req.body.review);
-    athlete.reviews.push(review);
-    await review.save();
-    await athlete.save();
-    res.redirect(`/athletes/${athlete._id}`);
-}))
-
-server.delete('/athletes/:id/reviews/:reviewId', catchAsync(async (req, res) => {
-    const { id, reviewId } = req.params;
-    await Athlete.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/athletes/${id}`);
-}))
 
 server.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))

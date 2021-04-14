@@ -1,12 +1,12 @@
 const Joi = require('joi');
 const { number } = require('joi');
 
-module.exports.AthleteSchema = Joi.object({
+module.exports.athleteSchema = Joi.object({
     athlete: Joi.object({
         name: Joi.string().required(),
         image: Joi.string().required(),
         sport: Joi.string().required(),
-        graduationYear: Joi.number().required().min(2000),
+        graduationYear: Joi.number().required().min(0),
         highSchool: Joi.string().required()
     }).required()
 });
