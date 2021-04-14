@@ -25,9 +25,9 @@ const validateReview = (req, res, next) => {
 router.post('/', validateReview, catchAsync(async (req, res) => {
     const athlete = await Athlete.findById(req.params.id);
     const review = new Review(req.body.review);
-    campground.reviews.push(review);
+    athlete.reviews.push(review);
     await review.save();
-    await athletes.save();
+    await athlete.save();
     req.flash('success', 'Created new review!');
     res.redirect(`/athletes/${athlete._id}`);
 }))

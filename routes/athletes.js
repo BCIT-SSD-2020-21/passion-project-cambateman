@@ -36,10 +36,6 @@ router.post('/', isLoggedIn, validateAthlete, catchAsync(async (req, res, next) 
 
 router.get('/:id', catchAsync(async (req, res,) => {
     const athlete = await Athlete.findById(req.params.id).populate('reviews');
-    if (!athletes) {
-        req.flash('error', 'Cannot find that athlete!');
-        return res.redirect('/athletes');
-    }
     res.render('athletes/show', { athlete });
 }));
 
@@ -49,7 +45,7 @@ router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
         req.flash('error', 'Cannot find that athlete!');
         return res.redirect('/athletes');
     }
-    res.render('athletes/edit', { athletes });
+    res.render('athletes/edit', { athlete });
 }))
 
 router.put('/:id', isLoggedIn, validateAthlete, catchAsync(async (req, res) => {
