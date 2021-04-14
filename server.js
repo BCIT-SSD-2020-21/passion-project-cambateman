@@ -28,15 +28,15 @@ db.once("open", () => {
     console.log("Database connected");
 });
 
-const app = express();
+const server = express();
 
-app.engine('ejs', ejsMate)
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'))
+server.engine('ejs', ejsMate)
+server.set('view engine', 'ejs');
+server.set('views', path.join(__dirname, 'views'))
 
-app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
-app.use(express.static(path.join(__dirname, 'public')))
+server.use(express.urlencoded({ extended: true }));
+server.use(methodOverride('_method'));
+server.use(express.static(path.join(__dirname, 'public')))
 
 const sessionConfig = {
     secret: 'thisshouldbeabettersecret!',
@@ -49,17 +49,17 @@ const sessionConfig = {
     }
 }
 
-app.use(session(sessionConfig))
-app.use(flash());
+server.use(session(sessionConfig))
+server.use(flash());
 
-app.use(passport.initialize());
-app.use(passport.session());
+server.use(passport.initialize());
+server.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use((req, res, next) => {
+server.use((req, res, next) => {
     console.log(req.session)
     res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
@@ -68,26 +68,26 @@ app.use((req, res, next) => {
 })
 
 
-app.use('/', userRoutes);
-app.use('/athletes', athletesRoutes)
-app.use('/athletes/:id/reviews', reviewRoutes)
+server.use('/', userRoutes);
+server.use('/athletes', athletesRoutes)
+server.use('/athletes/:id/reviews', reviewRoutes)
 
 
-app.get('/', (req, res) => {
+server.get('/', (req, res) => {
     res.render('home')
 });
 
 
-app.all('*', (req, res, next) => {
+server.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))
 })
 
-app.use((err, req, res, next) => {
+server.use((err, req, res, next) => {
     const { statusCode = 500 } = err;
     if (!err.message) err.message = 'Oh No, Something Went Wrong!'
     res.status(statusCode).render('error', { err })
 })
 
-app.listen(8080, () => {
+server.listen(8080, () => {
     console.log("Serving on port 8080")
 });
