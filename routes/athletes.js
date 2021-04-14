@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
-const athleteSchema = require('../schemas.js');
+const { athleteSchema } = require('../schemas.js');
 const { isLoggedIn } = require('../middleware');
 
 const ExpressError = require('../utils/ExpressError');
@@ -16,12 +16,13 @@ const validateAthlete = (req, res, next) => {
         next();
     }
 }
-
+//get all atheletes - for index page WORKS
 router.get('/', catchAsync(async (req, res) => {
     const athletes = await Athlete.find({});
     res.render('athletes/index', { athletes })
 }));
 
+//get 'new' page to create -  WORKS
 router.get('/new', isLoggedIn, (req, res) => {
     res.render('athletes/new');
 })
@@ -41,7 +42,7 @@ router.get('/:id', catchAsync(async (req, res,) => {
 
 router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
     const athlete = await Athlete.findById(req.params.id)
-    if (!athletes) {
+    if (!athlete) {
         req.flash('error', 'Cannot find that athlete!');
         return res.redirect('/athletes');
     }
