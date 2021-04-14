@@ -7,8 +7,12 @@ const AthleteSchema = new Schema({
     sport: String,
     graduationYear: Number,
     highSchool: String,
-    postGrad: Boolean,
-    city: String
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
+        }
+    ]
 });
 
 module.exports = mongoose.model('Athlete', AthleteSchema);

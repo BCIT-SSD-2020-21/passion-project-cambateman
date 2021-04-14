@@ -27,8 +27,8 @@ const seedDB = async () => {
             sport: `${sample(sports)}`,
             graduationYear: `${sample(graduationsYears)}`,
             highSchool: `${sample(highSchools)}`,
-            postGrad: `${sample(postGrad)}`,
-            city: `${cities[random1000].city}, ${cities[random1000].state}`
+            // postGrad: `${sample(postGrad)}`,
+            // city: `${cities[random1000].city}, ${cities[random1000].state}`
         })
         await athlete.save()
     }

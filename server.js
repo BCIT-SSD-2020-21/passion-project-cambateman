@@ -2,8 +2,12 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
+const { athleteSchema, reviewSchema } = require('./schemas.js');
+const catchAsync = require('./utils/catchAsync');
+const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const Athlete = require('./models/athlete');
+const Review = require('./models/review');
 
 mongoose.connect('mongodb://localhost:27017/scouting', {
     useNewUrlParser: true,
@@ -21,11 +25,30 @@ const server = express();
 
 server.engine('ejs', ejsMate)
 
+server.set('view engine', 'ejs');
+server.set('views', path.join(__dirname, 'views'));
+
 server.use(express.urlencoded({ extended: true }))
 server.use(methodOverride('_method'));
 
-server.set('view engine', 'ejs');
-server.set('views', path.join(__dirname, 'views'));
+const validateAthlete = (req, res, next) => {
+    const { error } = athleteSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
+const validateReview = (req, res, next) => {
+    const { error } = reviewSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
 
 server.get('/', (req, res) => {
     res.render('home')
@@ -47,7 +70,7 @@ server.post('/athletes', async (req, res) => {
 })
 
 server.get('/athletes/:id', async (req, res) => {
-    const athlete = await Athlete.findById(req.params.id)
+    const athlete = await Athlete.findById(req.params.id).populate('reviews')
     res.render('athletes/show', { athlete })
 })
 
@@ -66,6 +89,33 @@ server.delete('/athletes/:id', async (req, res) => {
     const { id } = req.params;
     await Athlete.findByIdAndDelete(id);
     res.redirect('/athletes');
+})
+
+server.post('/athletes/:id/reviews', (async (req, res) => {
+    const athlete = await Athlete.findById(req.params.id);
+    const review = new Review(req.body.review);
+    console.log(req.body.review)
+    athlete.reviews.push(review);
+    await review.save();
+    await athlete.save();
+    res.redirect(`/athletes/${athlete._id}`);
+}))
+
+server.delete('/athletes/:id/reviews/:reviewId', catchAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
+    await Athlete.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/athletes/${id}`);
+}))
+
+server.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404))
+})
+
+server.use((err, req, res, next) => {
+    const { statusCode = 500 } = err;
+    if (!err.message) err.message = 'Oh No, Something Went Wrong!'
+    res.status(statusCode).render('error', { err })
 })
 
 server.listen(8080, () => {
