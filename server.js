@@ -54,44 +54,44 @@ server.get('/', (req, res) => {
     res.render('home')
 });
 
-server.get('/athletes', async (req, res) => {
+server.get('/athletes', catchAsync (async (req, res) => {
     const athletes = await Athlete.find({});
     res.render('athletes/index', { athletes })
-});
+}));
 
 server.get('/athletes/new', (req, res) => {
     res.render('athletes/new')
 })
 
-server.post('/athletes', async (req, res) => {
+server.post('/athletes', validateAthlete, catchAsync(async (req, res) => {
     const athlete = new Athlete(req.body.athlete)
     await athlete.save();
     res.redirect(`/athletes/${athlete._id}`)
-})
+}))
 
-server.get('/athletes/:id', async (req, res) => {
+server.get('/athletes/:id', catchAsync(async (req, res) => {
     const athlete = await Athlete.findById(req.params.id).populate('reviews')
     res.render('athletes/show', { athlete })
-})
+}))
 
-server.get('/athletes/:id/edit', async (req, res) => {
+server.get('/athletes/:id/edit', catchAsync(async (req, res) => {
     const athlete = await Athlete.findById(req.params.id)
     res.render('athletes/edit', { athlete })
-})
+}))
 
-server.put('/athletes/:id', async (req, res) => {
+server.put('/athletes/:id', validateAthlete, catchAsync(async (req, res) => {
     const { id } = req.params;
     const athlete = await Athlete.findByIdAndUpdate(id, { ...req.body.athlete });
     res.redirect(`/athletes/${athlete._id}`)
-});
+}));
 
-server.delete('/athletes/:id', async (req, res) => {
+server.delete('/athletes/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Athlete.findByIdAndDelete(id);
     res.redirect('/athletes');
-})
+}))
 
-server.post('/athletes/:id/reviews', (async (req, res) => {
+server.post('/athletes/:id/reviews', validateReview, catchAsync(async (req, res) => {
     const athlete = await Athlete.findById(req.params.id);
     const review = new Review(req.body.review);
     athlete.reviews.push(review);
