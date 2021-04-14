@@ -29,7 +29,7 @@ router.get('/new', isLoggedIn, (req, res) => {
 
 
 router.post('/', isLoggedIn, validateAthlete, catchAsync(async (req, res, next) => {
-    const athletes = new Athlete(req.body.athlete);
+    const athlete = new Athlete(req.body.athlete);
     await athlete.save();
     req.flash('success', 'Successfully made a new Athlete!');
     res.redirect(`/athletes/${athlete._id}`)
@@ -51,7 +51,7 @@ router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
 
 router.put('/:id', isLoggedIn, validateAthlete, catchAsync(async (req, res) => {
     const { id } = req.params;
-    const athlete = await Athlete.findByIdAndUpdate(id, { ...req.body.athletes });
+    const athlete = await Athlete.findByIdAndUpdate(id, { ...req.body.athlete });
     req.flash('success', 'Successfully updated athlete!');
     res.redirect(`/athletes/${athlete._id}`)
 }));
